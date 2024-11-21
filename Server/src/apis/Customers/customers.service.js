@@ -24,6 +24,17 @@ class CustomerService {
         try {
             console.log('Đã vào xử lý dữ liệu cập nhật');
             const result = await customersModel.UpdateCustomer(customerID, customer);
+            console.log(result)
+            return result
+        }
+        catch (error) {
+            console.error(`Error:`, error);
+        }
+    }
+    async deleteCustomerProcessing(customerID) {
+        try {
+            console.log('Đã vào xử lý dữ liệu xóa');
+            const result = await customersModel.DeleteCustomer(customerID);
             return result
         }
         catch (error) {
