@@ -1,5 +1,5 @@
 import React from 'react';
-import GeneralPage from './generalPage';
+import GeneralPage from './GeneralPage';
 
 class PurchasePage extends GeneralPage {
     render() {
