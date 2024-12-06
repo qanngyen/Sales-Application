@@ -1,7 +1,6 @@
 import React from 'react';
-import GeneralPage from './GeneralPage';
 
-class PurchasePage extends GeneralPage {
+class PurchasePage extends React.Component {
     render() {
         return (
             <div>

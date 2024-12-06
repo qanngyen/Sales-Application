@@ -1,13 +1,21 @@
 import supplierRoute from './Suppliers/suppliers.route.js'
 import customerRouter from './Customers/customers.route.js'
-import purchaseInvoiceRouter from './Purchase-Invoices/purchase-invoices.route.js'
+import purchaseVoicesRouter from './PurchaseInvoices/purchaseinvoices.route.js'
+import salesinvoicesRouter from './SalesInvoices/salesinvoices.route.js'
+import purchaseInvoicesDetailsRouter from './PurchaseInvoicesDetails/purcharesinvoicesdetails.route.js'
+import salesInvoicesDetailsRouter from './SalesInvoicesDetails/salesinvoicesdetails.route.js'
+import productsRouter from './Products/products.route.js'
+
 import express from 'express'
 const route = express.Router()
 
 route
-  .use('/supplier', supplierRoute)
-  .use('/customer', customerRouter)
-  // .use('/purchase-invoices', purchaseInvoiceRouter)
-
+  .use('/supplier', supplierRoute) // done
+  .use('/customer', customerRouter) // done
+  .use('/purchaseInvoices', purchaseVoicesRouter) // done
+  .use('/salesinvoices', salesinvoicesRouter) // done
+  .use('/purchaseInvoicesDetails', purchaseInvoicesDetailsRouter) // done
+  .use('/salesinvoicesDetails', salesInvoicesDetailsRouter) // done
+  .use('/products', productsRouter) // done
 
 export default route

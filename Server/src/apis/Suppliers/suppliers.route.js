@@ -5,9 +5,10 @@ import suppliersController from './suppliers.controller.js'
 const router = express.Router()
 
 router
-    .post('/', suppliersController.xuLySupplier)
-    .get('/:id', suppliersController.readSupplier)
-    .post('/:id', suppliersController.updateSupplier)
-    .delete('/:id', suppliersController.deleteSupplier)
+    .post('/', suppliersController.addSupplierController)
+    .get('/:id', suppliersController.getSupplierByIdController)
+    .put('/', suppliersController.updateSupplierController)
+    .delete('/:id', suppliersController.deleteSupplierController)
+    .get('/', suppliersController.getAllSuppliersController)
 
 export default router

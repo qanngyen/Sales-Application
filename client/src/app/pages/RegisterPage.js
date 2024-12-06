@@ -1,7 +1,6 @@
 import React from 'react';
-import GeneralPage from './GeneralPage';
 
-class ResigterPage extends GeneralPage {
+class ResigterPage extends React.Component {
     render() {
         return (
             <div>

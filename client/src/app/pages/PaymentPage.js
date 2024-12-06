@@ -1,7 +1,6 @@
 import React from "react";
-import GeneralPage from "./GeneralPage";
 
-class PaymentPage extends GeneralPage  {
+class PaymentPage extends React.Component  {
     // Các thuộc tính, các hàm khác xử lý trên này
     
     

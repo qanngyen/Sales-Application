@@ -1,46 +1,52 @@
 import customersModel from "../../../model/customers.model";
 
-class CustomerService {
-    async customersProcessing(customer) {
+class CustomersService {
+    // thêm dữ liệu
+    async addCustomerService(customer) {
         try {
-            console.log('Đã vào xử lý dữ liệu khách hàng');
-            const result = await customersModel.XuLyCustomer(customer);
+            const result = await customersModel.addCustomer(customer)
             return result
-        } catch (error) {
-            console.error(`Error:`, error);
+        } catch (err) {
+            console.log(err)
         }
     }
-    async readingsProcessing(customerID) {
+    // xem tất cả
+    async getAllCustomersService() {
         try {
-            console.log('Đã vào xử lý dữ liệu đọc');
-            const result = await customersModel.ReadCustomer(customerID)
+            const result = await customersModel.getAllCustomers()
             return result
-        }
-        catch (error) {
-            console.error(`Error:`, error);
+        } catch (err) {
+            console.log(err)
         }
     }
-    async updateCustomerProcessing(customerID, customer) {
+    // xem theo id
+    async getCustomerByIdService(customerID) {
         try {
-            console.log('Đã vào xử lý dữ liệu cập nhật');
-            const result = await customersModel.UpdateCustomer(customerID, customer);
-            console.log(result)
+            console.log('đã vào được service')
+            const result = await customersModel.getCustomerById(customerID)
             return result
-        }
-        catch (error) {
-            console.error(`Error:`, error);
+        } catch (err) {
+            console.log(err)
         }
     }
-    async deleteCustomerProcessing(customerID) {
+    // sửa theo id
+    async updateCustomerByIdService(customer) {
         try {
-            console.log('Đã vào xử lý dữ liệu xóa');
-            const result = await customersModel.DeleteCustomer(customerID);
+            const result = await customersModel.updateCustomerById(customer)
             return result
+        } catch (err) {
+            console.log(err)
         }
-        catch (error) {
-            console.error(`Error:`, error);
+    }
+    // xóa theo id
+    async deleteCustomerByIdService(customerID) {
+        try {
+            const result = await customersModel.deleteCustomerById(customerID)
+            return result
+        } catch (err) {
+            console.log(err)
         }
     }
 }
 
-export default new CustomerService();
+export default new CustomersService();

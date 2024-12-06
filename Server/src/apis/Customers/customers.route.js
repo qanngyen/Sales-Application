@@ -5,9 +5,9 @@ import customersController from "./customers.controller";
 const router = express.Router();
 
 router
-    .post('/', customersController.xuLyCustomer)
-    .get('/:id', customersController.readingCustomer)
-    .post('/:id', customersController.updatingCustomer)
-    .delete('/:id', customersController.deleteCustomer)
-
+    .get('/', customersController.getAllCustomerController)
+    .get('/:id', customersController.getCustomerByIdController)
+    .post('/', customersController.addCustomerController)
+    .put('/', customersController.updateCustomerController)
+    .delete('/:id', customersController.deleteCustomerController)
 export default router;

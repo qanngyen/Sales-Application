@@ -1,55 +1,51 @@
-import suppliersModel from "../../../model/suppliers.model.js";
+import suppliersModel from "../../../model/suppliers.model";
 
 class SupplierService {
-    async xuLySupplierService(supplierExample) {
+    // thêm nhà cung cấp
+    async addNewSupplierService(supplier) {
         try {
-            console.log('Đã vào được service')
-            const result = await suppliersModel.suppliersProcessing(supplierExample)
-            return {
-                message: 'Thành công',
-                data: result
-            }
-        } 
-        catch(error) {
-            console.error(`Error:`, error);
-        }
-    }
-    async readSupplier(supplierID) {
-        try {
-            console.log('Đã vào được service read ncc')
-            const result = await suppliersModel.readSuppliers(supplierID)
-            return {
-                message: 'Thành công',
-                data: result
-            }
-        } catch(error) {
-            console.log('Error', error)
-        }
-    }
-    async updateSupplier (supplierID, valuesUpdateObject) {
-        try {
-            console.log('Đã vào được update supplier service')
-            const result = await suppliersModel.updateSupplier(supplierID, valuesUpdateObject)
-            return {
-                message: 'Thành công',
-                data: result
-            }
+            const result = await suppliersModel.addNewSupplier(supplier);
+            return result
         } catch (error) {
-            console.log('Error', error)
+            console.error(error.message);
+        }
+    } 
+    // xem tất cả thông tin nhà cung cấp
+    async getAllSuppliersService() {
+        try {
+            const result = await suppliersModel.getAllSuppliers();
+            return result
+        } catch (error) {
+            console.error(error.message);
         }
     }
-    async deleteSupplier (supplierID) {
+    // xem thông tin by id
+    async getSupplierByIdService(supplierId) {
         try {
-            console.log('Đã vào được delete supplier service')
-            const result = await suppliersModel.deleteSupplier(supplierID)
-            return {
-                message: 'Thành công',
-                data: result
-            }
+            const result = await suppliersModel.getSupplierById(supplierId);
+            return result
         } catch (error) {
-            console.log('Error',error)
+            console.error(error.message);
+        }
+    }
+    // xóa thông tin 
+    async deleteSupplierService(supplierId) {
+        try {
+            const result = await suppliersModel.deleteSupplier(supplierId);
+            return result
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+    // cập nhật thông tin nhà cung cấp
+    async updateSupplierService(supplier) { 
+        try {
+            const result = await suppliersModel.updateSupplier(supplier);
+            return result
+        } catch (error) {
+            console.error(error.message);
         }
     }
 }
 
-export default new SupplierService
+export default new SupplierService();

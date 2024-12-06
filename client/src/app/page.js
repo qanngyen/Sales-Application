@@ -1,4 +1,5 @@
 import Image from "next/image";
+import GeneralPage from "./pages/GeneralPage";
 
 export default function Home() {
   // reoute để đổi giữa các pages
