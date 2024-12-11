@@ -21,21 +21,28 @@ class purchaseInvoicesDetails {
         }
     }
     // thêm chi tiết hóa đơn mua
-    async addPurchaseInvoiceDetails(purchaseInvoiceDetails) {
+    async addPurchaseInvoiceDetails(purchaseInvoiceDetailsArray) {
         try {
+            const results = []
             await pool.connect()
-            const result = await pool.request()
-                .input('HH_ID', purchaseInvoiceDetails.HH_id)
-                .input('HH_Name', purchaseInvoiceDetails.HH_name)
-                .input('DVT', purchaseInvoiceDetails.Dvt)
-                .input('HDN_ID', purchaseInvoiceDetails.HDN_id)
-                .input('HDN_soluong', purchaseInvoiceDetails.HDN_soluong)
-                .input('Dongianhap', purchaseInvoiceDetails.Dongianhap)
-                .input('check', purchaseInvoiceDetails.Check)
-                .execute('sp_XuLyThemHangHoa')
+            for (let purchaseInvoiceDetails of purchaseInvoiceDetailsArray) {
+                console.log(purchaseInvoiceDetails)
+                const result = await pool.request()
+                    .input('HH_ID', purchaseInvoiceDetails.HH_id)
+                    .input('HH_Name', purchaseInvoiceDetails.HH_name)
+                    .input('DVT', purchaseInvoiceDetails.Dvt)
+                    .input('HDN_ID', purchaseInvoiceDetails.HDN_id)
+                    .input('HDN_soluong', purchaseInvoiceDetails.HDN_soluong)
+                    .input('Dongianhap', purchaseInvoiceDetails.Dongianhap)
+                    .input('check', purchaseInvoiceDetails.Check)
+                    .execute('sp_XuLyThemHangHoa')
+                console.log(result)
+                results.push(result)
+                // if (result.status)
+            }
             return {
                 message: "success to add purchase invoice details",
-                data: result
+                data: results
             }
         } catch (error) {
             console.error(error)
@@ -60,7 +67,7 @@ class purchaseInvoicesDetails {
                 .execute('updateChiTietHoaDonMua')
             return {
                 message: "success to update purchase invoice details",
-                data: result
+                data: results
             }
         } catch (e) {
             console.error(e)

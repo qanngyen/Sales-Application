@@ -2,17 +2,21 @@ import pool from '../data/connection.js'
 
 class SalesInvoicesDetails {
     // thêm chi tiết hóa đơn bán
-    async addNewSalesInvoicesDetails(salesInvoicesDetails) {
+    async addNewSalesInvoicesDetails(salesInvoicesDetailsArray) {
         try {
+            const results = []
             await pool.connect()
-            const result = await pool.request()
-                   .input('HDB_id', salesInvoicesDetails.HDB_id)
-                   .input('HH_id', salesInvoicesDetails.HH_id)
-                   .input('HDB_SoLuong', salesInvoicesDetails.HDB_soluong)
-                   .execute('sp_XuLyBanHang')
+            for (let salesInvoicesDetails of salesInvoicesDetailsArray) {
+                const result = await pool.request()
+                .input('HDB_id', salesInvoicesDetails.HDB_id)
+                .input('HH_id', salesInvoicesDetails.HH_id)
+                .input('HDB_SoLuong', salesInvoicesDetails.HDB_soluong)
+                .execute('sp_XuLyBanHang')
+                results.push(result)
+            }
             return {
                 message: 'Success to add new sales invoices details',
-                data: result
+                data: results
             }
         } catch (error) {
             console.error(error.message);

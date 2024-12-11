@@ -1,0 +1,188 @@
+.paymentSite {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    margin: 0;
+    background-color: #eee2e2;
+    justify-content: space-between;
+}
+
+.paymentSiteContainer {
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    border-top-left-radius: 30px;
+    border-bottom-left-radius: 30px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.inf {
+    height: fit-content;
+    display: flex;
+    max-height: 70%;
+    margin-left: 60px;
+}
+
+
+.productInf {
+    display: flex;
+}
+
+.productInf p {
+    width: 210px;
+   
+}
+
+.productInf button {
+    margin-right: 30px;
+}
+
+.edit, .create, .delete, .submit {
+    background-color: #3333;
+    border-radius: 10px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 0 5px #3333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 10px;
+    margin: auto;
+    margin-bottom: 0;
+    width: 150px;
+    height: 50px;
+}
+
+.paymentBlockbtn {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: -55px;
+}
+
+.paymentBlockbtn div {
+    width: 350px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.edit:hover, .create:hover, .delete:hover, .submit:hover {
+    color: rgb(248, 107, 107);
+    background-color: #ffffff;
+    box-shadow: 0 0 20px #1e1e1e33;
+}
+
+.salesInvoicesDetailInf {
+    height: 400px;
+    overflow-y: scroll;
+    flex-direction: column;
+    border-top: solid 1px #adaaaa;
+    border-bottom: solid 1px #adaaaa;
+    width: 1100px;
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    height: 12px;
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    width: 5px;
+    height: 2px;
+    background-color: #c9c5c5;
+    border-radius: 10px;
+}
+
+.salesInvoicesInf {
+    margin-top: -130px;
+    margin-bottom: 10px;
+}
+
+.salesInvoicesInf div {
+    width: 600px;
+}
+
+.customerInf {
+    display: flex;
+}
+
+.customerInf p {
+    width: 381px;
+}
+
+.popupContainer {
+    width: 100%;
+    height: 100%;
+    background-color: #201e1e33;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.popup {
+    padding: 25px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: antiquewhite;
+}
+
+.popup form input, label, select {
+    margin-right: 10px;
+    font-weight: 600;
+}
+
+.popup form input, select {
+    padding: 10px;
+    border-radius: 10px;
+    border: solid 1px transparent;
+}
+.popup form button, .closePopupBtn {
+    background-color: #3333;
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+
+.abc {
+    height: 200px;
+    overflow-y: scroll;
+}
+
+.closePopupBtn {
+    margin-top: 20px
+}
+
+.hidden {
+    display: none;
+}
+
+.paymentBlock {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-top: -30px;
+}
+
+.productAdd {
+    margin-top: 10px;
+}
+
+/* .salesInvoicesDetailInfBlock {
+    height: 200px;
+    margin: 0;
+} */
+
+
+
