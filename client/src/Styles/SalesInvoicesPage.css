@@ -1,0 +1,60 @@
+.siteInvoices {
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    border-left: solid 1px transparent;
+    border-top-left-radius: 20px;
+    border-bottom-left-radius: 20px;
+    box-shadow: 5px 5px 5px 15px #aaaaaa;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2 {
+    margin: auto;
+    margin-top: 10px;
+}
+.invoices {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.invoices p {
+    width: 150px;
+}
+
+.deletebtn, .editbtn, .closePopupBtn {
+    margin-left: 10px;
+    border-radius: 10px;
+}
+.closePopupBtn {
+    margin-top: 10px;
+} 
+.popupContainerAbc {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    background-color: rgba(51, 51, 51, 0.1);
+}
+
+.popupAbc {
+    height: 65%;
+    background-color: antiquewhite;
+    padding: 20px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.hidden {
+    display: none;
+}

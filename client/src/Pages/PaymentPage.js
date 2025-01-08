@@ -24,6 +24,8 @@ class PaymentPage extends React.Component {
         salesInvoicesDetails: [],
         count: 0
     }
+
+    // bắt sự thay đổi để hiển thị thông tin hóa đơn trên màn hình
     onChangeHandler = (e, index) => {
         if (e.target.id === 'Cust_thue') {
             this.setState({
@@ -67,6 +69,7 @@ class PaymentPage extends React.Component {
                     Cust_acno: e.target.value
                 }
             })
+        // phần chi tiết hóa đơn
         } else if (e.target.id === 'HH_id') {
             this.setState({
                 salesInvoicesDetails: this.state.salesInvoicesDetails.map((item, i) => {
@@ -84,7 +87,8 @@ class PaymentPage extends React.Component {
                 salesInvoicesDetails: this.state.salesInvoicesDetails.map((item, i) => {
                     if (i === index) {
                         return {
-                           ...item,
+                            // sao chép tất cả các thuộc tính của phần tử hiện tại
+                            ...item,
                             HDB_soluong: parseInt(e.target.value)
                         }
                     }
@@ -93,7 +97,6 @@ class PaymentPage extends React.Component {
             })
         }
     }
-
     onClickToAddProduct = (e) => {
         // chặn sự kiện reload
         e.preventDefault()
@@ -125,6 +128,7 @@ class PaymentPage extends React.Component {
         });
     }
 
+    // thực hiện call api để lấy đúng dữ liệu theo mã 
     closePopup = async () => {
         const popupContainer = document.getElementsByClassName('popupContainer')[0];
         if (popupContainer) {
@@ -144,43 +148,134 @@ class PaymentPage extends React.Component {
             const customerRes = await axios.get(`/customer/${this.state.customer.Cust_id}`, {
                 headers: { Authorization: `Bearer ${token}` },
             });
-    
             const allProductRes = [];
             await Promise.all(
-                this.state.salesInvoicesDetails.map(async (item) => {
+                this.state.salesInvoicesDetails.map(async (item, index) => {
+                    console.log(item.HH_id)
                     const productRes = await axios.get(`/products/${item.HH_id}`, {
                         headers: { Authorization: `Bearer ${token}` },
                     });
-                    allProductRes.push(productRes);
+                    allProductRes.push({ index, productRes });
                 })
             );
+            allProductRes.sort((a, b) => a.index - b.index);
             const {Cust_Ad, Cust_ID, Cust_name} = customerRes.data.data[0]
+            let updatedDetails = [...this.state.salesInvoicesDetails]
+            let tong = 0
+            // thay đổi trực tiệp trong mảng update
+            for (let i = 0; i < allProductRes.length; i++) {
+                updatedDetails[i].HH_name = allProductRes[i].productRes.data.data.recordset[0].HH_Name
+                updatedDetails[i].Dongiaban = allProductRes[i].productRes.data.data.recordset[0].GiaBanMacDinh
+                updatedDetails[i].HDB_thanhtien = allProductRes[i].productRes.data.data.recordset[0].GiaBanMacDinh* updatedDetails[i].HDB_soluong
+                tong = tong + updatedDetails[i].HDB_thanhtien 
+            }  
+            let updatedInvoices = this.state.salesInvoices
+            updatedInvoices.HDB_tongtienhanghoa = tong
+            updatedInvoices.HDB_tongtienhoadon = tong - tong*0.1
+            updatedInvoices.HDB_thue = 0.1
             this.setState({
                 customer: {
                     Cust_id: Cust_ID,
                     Cust_name: Cust_name,
                     Cust_ad: Cust_Ad
-                }
-            })
-            console.log(allProductRes);
-            console.log(customerRes);
-            
+                },
+                salesInvoicesDetails: updatedDetails,
+                salesInvoices: updatedInvoices
+            });
         } catch (error) {
             console.error("Error fetching data:", error.response?.data || error.message);
         }
     };
-    
-
+    // hiển thị pop up form thông tin hóa đơn
     createOrder = () => {
         const popupContainer = document.getElementsByClassName('popupContainer')[0];
         if (popupContainer) {
             popupContainer.classList.remove('hidden');
         }
     }
+
+    // submit hóa đơn cập nhật vào cơ sở dữ liệu
+    submitInvoices = async () => {
+        // Lấy token từ localStorage (hoặc nguồn khác nếu cần)
+        const token = localStorage.getItem('token'); // `token` cần trùng với giá trị `VALID_TOKEN` trong middleware.
+    
+        if (!token) {
+            console.error("Token is missing!");
+            return;
+        }
+        try {
+            // Xử lý khách hàng
+            const customer = {
+                Cust_id: this.state.customer.Cust_id,
+                Cust_name: this.state.customer.Cust_name,
+                Cust_ad: this.state.customer.Cust_ad,
+            };
+            const resultOfSubmitCustomer = await axios.post(`/customer/`, 
+                customer, {headers: { Authorization: `Bearer ${token}` }}
+            );
+
+            console.log(resultOfSubmitCustomer)
+
+            // Xử lý hóa đơn
+            const salesInvoices = {
+                Cust_id: this.state.customer.Cust_id,
+                HDB_tt: this.state.salesInvoices.HDB_tt,
+                HDB_thue: 10,
+                Cust_acno: this.state.salesInvoices.Cust_acno,
+                Cust_ddname: this.state.salesInvoices.Cust_ddname
+            }
+            const resultOfSubmitSalesInvoices = await axios.post(`/salesinvoices/`, 
+                salesInvoices, {headers: { Authorization: `Bearer ${token}` }}
+            );
+
+            console.log(resultOfSubmitSalesInvoices)
+            // lấy HDB_id từ kết quả trả về
+            const HDB_id = resultOfSubmitSalesInvoices.data.data.output.ID
+            // Xử lý chi tiết hóa đơn
+            const salesInvoicesDetails = this.state.salesInvoicesDetails.map((item) => {
+                return {
+                    ...item,
+                    HDB_id: HDB_id // truyền hóa đơn bán vào đây
+                }
+            })
+
+            const resultOfSubmitSalesInvoicesDetails = await axios.post(`/salesinvoicesdetails/`, 
+                salesInvoicesDetails, {headers: { Authorization: `Bearer ${token}` }}
+            );
+
+            console.log(resultOfSubmitSalesInvoicesDetails)
+            alert('Tạo hóa đơn thành công!');
+            this.setState({
+                check: localStorage.getItem('token'),
+                customer: {
+                    Cust_id: '',
+                    Cust_name: '',
+                    Cust_ad: ''
+                },
+                salesInvoices: {
+                    HDB_time: new Date().toLocaleString(),
+                    HDB_tt: '',
+                    HDB_thue: null,
+                    Cust_acno: '',
+                    Cust_ddname: '',
+                    Cust_id: '',
+                    HDB_tongtienhanghoa: null,
+                    HDB_tongtienhoadon: null
+                },
+                salesInvoicesDetails: [],
+                count: 0
+            })
+        } catch (error) {
+            alert('Tạo hóa đơn thất bại!');
+            console.error("Error fetching data:", error.response?.data || error.message);
+        }
+    }
     render() {
         if (this.state.check === 'your-unique-token') {
             return (
-                <div className="paymentSite">
+                // container lắp đầy
+                <div className="site">
+                    {/* pop up */}
                     <div className="popupContainer hidden">
                         <div className="popup">
                             <form action="">
@@ -224,18 +319,18 @@ class PaymentPage extends React.Component {
                             <button className="closePopupBtn" onClick={this.closePopup}>TẠO</button>
                         </div>
                     </div>
-                    <SideBar className='sideBarComponent'></SideBar>
-                    <div className="paymentSiteContainer">
+                    {/* Màn chính */}
+                    <div className="siteContainer">
                         <h2>THÔNG TIN HÓA ĐƠN BÁN</h2>
-                        <div className="paymentBlock">
-                            <div className="customerInf inf">
+                        <div className="block">
+                            <div className="customerInf">
                                 <p>Mã số thuế: <span>{this.state.customer.Cust_id}</span></p>
                                 <p>Tên đơn vị: <span>{this.state.customer.Cust_name}</span></p>
                                 <p>Địa chỉ đơn vị: <span>{this.state.customer.Cust_ad}</span></p>
                             </div>
                         </div>
-                        <div className="salesInvoicesDetailInfBlock paymentBlock">
-                            <div className="salesInvoicesDetailInf inf">
+                        <div className="block">
+                            <div className="salesInvoicesDetailInf">
                                 {
                                     this.state.salesInvoicesDetails.map(item => {
                                         return (
@@ -251,8 +346,8 @@ class PaymentPage extends React.Component {
                                 }
                             </div>
                         </div>
-                        <div className="paymentBlock">
-                            <div className="salesInvoicesInf inf">
+                        <div className="block">
+                            <div className="salesInvoicesInf">
                                 <div>
                                     <p>Thời gian: <span>{this.state.salesInvoices.HDB_time}</span></p>
                                     <p>Phương thức thanh toán: <span>{this.state.salesInvoices.HDB_tt}</span></p>
@@ -260,18 +355,18 @@ class PaymentPage extends React.Component {
                                     <p>Số tài khoản: <span>{this.state.salesInvoices.Cust_acno}</span></p>
                                 </div>
                                 <div>
-                                    <p>Tổng tiền hàng hóa: <span>{this.state.HDB_tongtienhanghoa}</span></p>
-                                    <p>Tiền thuế hàng hóa: <span>{this.state.HDB_thue}</span></p>
-                                    <p>Tổng tiền hóa đơn: <span>{this.state.HDB_tongtienhoadon}</span></p>
+                                    <p>Tổng tiền hàng hóa: <span>{this.state.salesInvoices.HDB_tongtienhanghoa}</span></p>
+                                    <p>Tiền thuế hàng hóa: <span>{this.state.salesInvoices.HDB_thue}</span></p>
+                                    <p>Tổng tiền hóa đơn: <span>{this.state.salesInvoices.HDB_tongtienhoadon}</span></p>
                                 </div>
                             </div>
                         </div>
-                        <div className="paymentBlockbtn">
+                        <div className="blockbtn">
                             <div>
                                 <button className="create" onClick={this.createOrder}>TẠO HÓA ĐƠN</button>
                                 <button className="edit" onClick={this.createOrder}>CHỈNH SỬA</button>
                             </div>
-                            <div><button className="submit">XÁC NHẬN</button></div>
+                            <div><button className="submit" onClick={this.submitInvoices}>XÁC NHẬN</button></div>
                         </div>
                     
                     </div>

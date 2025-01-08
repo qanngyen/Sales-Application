@@ -33,7 +33,7 @@
 }
 
 .popup input, select, label {
-    padding: 10px;
+    padding: 3px;
     border-radius: 5px;
     margin-left: 10px;
     margin-right: 10px;
@@ -42,7 +42,7 @@
 
 .popup button {
     cursor: pointer;
-    padding: 7px;
+    padding: 3px;
     border-radius: 5px;
     margin-top: 20px;
 }
@@ -82,16 +82,20 @@
     padding: 20px;
 }
 
-.salesInvoicesInf {
+.purchaseInvoicesInf {
     display: flex;
 }
 
-.customerInf, .salesInvoicesDetailInf {
+.supplierInf, .purchaseInvoicesDetailInf {
     display: flex;
 }
 
-.salesInvoicesDetailInf {
-    height: 217px;
+.supplierInf p {
+    width: 300px;
+}
+
+.purchaseInvoicesDetailInf {
+    height: 200px;
     overflow-y: scroll;
     display: flex;
     flex-direction: column;
@@ -112,14 +116,14 @@
     margin-left: 10px;
 }
 
-.customerInf p {
+.suplierInf p {
     /* margin-right: 250px; */
     width: 300px;
 }
 
-.salesInvoicesInf div {
+.purchaseInvoicesInf div {
     /* margin-right: 300px; */
-    width: 550px;
+    width: 350px;
 }
 
 .productInf {
